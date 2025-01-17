@@ -1,0 +1,125 @@
+from tkinter import *
+from tkinter import messagebox  # Importar el módulo messagebox
+import os
+class GestorDeClientes:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Gestor de clientes")
+        self.root.resizable(0, 0)
+        self.root.geometry("800x800")
+        self.root.config(bg="#D8BFD8")
+
+        # CONTENEDOR PRINCIPAL
+        self.frame = Frame(self.root, bg="beige", bd=3)
+        self.frame.place(relx=0.5, rely=0.5, anchor=CENTER, width=750, height=750)
+
+        # ELEMENTOS / WIDGETS
+        label = Label(self.frame, text="Gestor de Clientes", bg="#D8BFD8", fg="black", font="Arial 20 bold")
+        label.pack(pady=20)
+
+        # CAMPOS PARA COLOCAR INFORMACION
+        field_frame1 = Frame(self.frame, bg="beige")
+        field_frame1.pack(pady=10)
+        label1 = Label(field_frame1, text="Nombre del cliente:", bg="beige", fg="black", font="Arial 15")
+        label1.pack(side=LEFT, padx=5)
+        self.entry1 = Entry(field_frame1, font="Arial 15")
+        self.entry1.pack(side=LEFT, padx=5)
+
+        field_frame2 = Frame(self.frame, bg="beige")
+        field_frame2.pack(pady=10)
+        label2 = Label(field_frame2, text="Teléfono del cliente:", bg="beige", fg="black", font="Arial 15")
+        label2.pack(side=LEFT, padx=5)
+        self.entry2 = Entry(field_frame2, font="Arial 15")
+        self.entry2.pack(side=LEFT, padx=5)
+
+        field_frame3 = Frame(self.frame, bg="beige")
+        field_frame3.pack(pady=10)
+        label3 = Label(field_frame3, text="Correo del cliente:", bg="beige", fg="black", font="Arial 15")
+        label3.pack(side=LEFT, padx=5)
+        self.entry3 = Entry(field_frame3, font="Arial 15")
+        self.entry3.pack(side=LEFT, padx=5)
+
+        # Boton para agregar cliente
+        button = Button(self.frame, text="Agregar cliente", bg="#D8BFD8", fg="black", font="Arial 15 bold", width=15, height=1, command=self.agregar_cliente)
+        button.pack(pady=10)
+
+        # Boton para eliminar cliente
+        button1 = Button(self.frame, text="Eliminar cliente", bg="#D8BFD8", fg="black", font="Arial 15 bold", width=15, height=1, command=self.eliminar_cliente)
+        button1.pack(pady=10)
+
+        # Ventana para ver la lista de clientes
+        self.frameview = Frame(self.frame, bg="white", bd=3)
+        self.frameview.pack(pady=20, fill=BOTH, expand=True)
+
+        # Listbox para mostrar la lista de clientes
+        self.listbox = Listbox(self.frameview, font="Arial 15", bg="white", fg="black")
+        self.listbox.pack(side=LEFT, fill=BOTH, expand=True)
+
+        # Scrollbar para el Listbox
+        scrollbar = Scrollbar(self.frameview)
+        scrollbar.pack(side=RIGHT, fill=Y)
+
+        # Configurar el Listbox para usar la Scrollbar
+        self.listbox.config(yscrollcommand=scrollbar.set)
+        scrollbar.config(command=self.listbox.yview)
+
+        # Cargar clientes desde el archivo de texto
+        self.cargar_clientes()
+
+
+
+    def agregar_cliente(self):
+        # Obtener los valores de los campos de entrada
+        nombre = self.entry1.get()
+        telefono = self.entry2.get()
+        correo = self.entry3.get()
+        
+        # Verificar que todos los campos estén llenos
+        if nombre and telefono and correo:
+            # Crear una cadena con la información del cliente
+            cliente = f"Nombre: {nombre}, Teléfono: {telefono}, Correo: {correo}"
+            
+            # Insertar la cadena en el Listbox
+            self.listbox.insert(END, cliente)
+
+            # Guardar la información en un archivo de texto
+            with open("clientes.txt", "a") as file:
+                file.write(cliente + "\n")
+            
+            # Limpiar los campos de entrada
+            self.entry1.delete(0, END)
+            self.entry2.delete(0, END)
+            self.entry3.delete(0, END)
+        else:
+            # Mostrar una advertencia si algún campo está vacío
+            messagebox.showwarning("Advertencia", "Por favor, complete todos los campos.")
+
+    def eliminar_cliente(self):
+        # Obtener la selección actual
+        seleccion = self.listbox.curselection()
+        if seleccion:
+            index = seleccion[0]
+            self.listbox.delete(index)
+            # Actualizar el archivo de texto
+            self.guardar_clientes()
+        else:
+            messagebox.showwarning("Advertencia", "Por favor, seleccione un cliente para eliminar.")
+
+    def cargar_clientes(self):
+        # Verificar si el archivo existe
+        if os.path.exists("clientes.txt"):
+            with open("clientes.txt", "r") as file:
+                for line in file:
+                    cliente = line.strip()
+                    self.listbox.insert(END, cliente)
+
+    def guardar_clientes(self):
+        # Guardar todos los clientes del Listbox en el archivo de texto
+        with open("clientes.txt", "w") as file:
+            for cliente in self.listbox.get(0, END):
+                file.write(cliente + "\n")
+
+if __name__ == "__main__":
+    root = Tk()
+    app = GestorDeClientes(root)
+    root.mainloop()
