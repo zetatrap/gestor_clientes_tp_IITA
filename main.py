@@ -1,5 +1,5 @@
 from tkinter import *
-from tkinter import messagebox  # Importar el módulo messagebox
+from tkinter import messagebox
 import os
 class GestorDeClientes:
     def __init__(self, root):
@@ -9,7 +9,7 @@ class GestorDeClientes:
         self.root.geometry("800x800")
         self.root.config(bg="#D8BFD8")
 
-        # CONTENEDOR PRINCIPAL
+        # CONTENEDOR PRINCIPAL (Padre)
         self.frame = Frame(self.root, bg="beige", bd=3)
         self.frame.place(relx=0.5, rely=0.5, anchor=CENTER, width=750, height=750)
 
@@ -17,7 +17,7 @@ class GestorDeClientes:
         label = Label(self.frame, text="Gestor de Clientes", bg="#D8BFD8", fg="black", font="Arial 20 bold")
         label.pack(pady=20)
 
-        # CAMPOS PARA COLOCAR INFORMACION
+        # CAMPOS 
         field_frame1 = Frame(self.frame, bg="beige")
         field_frame1.pack(pady=10)
         label1 = Label(field_frame1, text="Nombre del cliente:", bg="beige", fg="black", font="Arial 15")
@@ -69,44 +69,35 @@ class GestorDeClientes:
 
 
     def agregar_cliente(self):
-        # Obtener los valores de los campos de entrada
+        # Obtener los valores
         nombre = self.entry1.get()
         telefono = self.entry2.get()
         correo = self.entry3.get()
         
-        # Verificar que todos los campos estén llenos
         if nombre and telefono and correo:
-            # Crear una cadena con la información del cliente
             cliente = f"Nombre: {nombre}, Teléfono: {telefono}, Correo: {correo}"
             
-            # Insertar la cadena en el Listbox
             self.listbox.insert(END, cliente)
 
-            # Guardar la información en un archivo de texto
             with open("clientes.txt", "a") as file:
                 file.write(cliente + "\n")
             
-            # Limpiar los campos de entrada
             self.entry1.delete(0, END)
             self.entry2.delete(0, END)
             self.entry3.delete(0, END)
         else:
-            # Mostrar una advertencia si algún campo está vacío
             messagebox.showwarning("Advertencia", "Por favor, complete todos los campos.")
 
     def eliminar_cliente(self):
-        # Obtener la selección actual
         seleccion = self.listbox.curselection()
         if seleccion:
             index = seleccion[0]
             self.listbox.delete(index)
-            # Actualizar el archivo de texto
             self.guardar_clientes()
         else:
             messagebox.showwarning("Advertencia", "Por favor, seleccione un cliente para eliminar.")
 
     def cargar_clientes(self):
-        # Verificar si el archivo existe
         if os.path.exists("clientes.txt"):
             with open("clientes.txt", "r") as file:
                 for line in file:
@@ -114,7 +105,6 @@ class GestorDeClientes:
                     self.listbox.insert(END, cliente)
 
     def guardar_clientes(self):
-        # Guardar todos los clientes del Listbox en el archivo de texto
         with open("clientes.txt", "w") as file:
             for cliente in self.listbox.get(0, END):
                 file.write(cliente + "\n")
