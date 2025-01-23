@@ -47,29 +47,27 @@ class GestorDeClientes:
         button1 = Button(self.frame, text="Eliminar cliente", bg="#D8BFD8", fg="black", font="Arial 15 bold", width=15, height=1, command=self.eliminar_cliente)
         button1.pack(pady=10)
 
-        # Ventana para ver la lista de clientes
+        # Ventana CLIOENTES
         self.frameview = Frame(self.frame, bg="white", bd=3)
         self.frameview.pack(pady=20, fill=BOTH, expand=True)
 
-        # Listbox para mostrar la lista de clientes
+        # Listbox LISTA
         self.listbox = Listbox(self.frameview, font="Arial 15", bg="white", fg="black")
         self.listbox.pack(side=LEFT, fill=BOTH, expand=True)
 
-        # Scrollbar para el Listbox
+        # scrollbar
         scrollbar = Scrollbar(self.frameview)
         scrollbar.pack(side=RIGHT, fill=Y)
 
-        # Configurar el Listbox para usar la Scrollbar
+        # scroll configg
         self.listbox.config(yscrollcommand=scrollbar.set)
         scrollbar.config(command=self.listbox.yview)
 
-        # Cargar clientes desde el archivo de texto
         self.cargar_clientes()
 
 
 
     def agregar_cliente(self):
-        # Obtener los valores
         nombre = self.entry1.get()
         telefono = self.entry2.get()
         correo = self.entry3.get()
