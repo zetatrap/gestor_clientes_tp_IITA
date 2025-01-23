@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 import os
 class GestorDeClientes:
-    def __init__(self, root):
+    def __init__(self, root):      
         self.root = root
         self.root.title("Gestor de clientes")
         self.root.resizable(0, 0)
@@ -27,7 +27,7 @@ class GestorDeClientes:
 
         field_frame2 = Frame(self.frame, bg="beige")
         field_frame2.pack(pady=10)
-        label2 = Label(field_frame2, text="Teléfono del cliente:", bg="beige", fg="black", font="Arial 15")
+        label2 = Label(field_frame2, text="Telefono del cliente:", bg="beige", fg="black", font="Arial 15")
         label2.pack(side=LEFT, padx=5)
         self.entry2 = Entry(field_frame2, font="Arial 15")
         self.entry2.pack(side=LEFT, padx=5)
@@ -39,11 +39,11 @@ class GestorDeClientes:
         self.entry3 = Entry(field_frame3, font="Arial 15")
         self.entry3.pack(side=LEFT, padx=5)
 
-        # Boton para agregar cliente
+        # Boton add
         button = Button(self.frame, text="Agregar cliente", bg="#D8BFD8", fg="black", font="Arial 15 bold", width=15, height=1, command=self.agregar_cliente)
         button.pack(pady=10)
 
-        # Boton para eliminar cliente
+        # Boton supr
         button1 = Button(self.frame, text="Eliminar cliente", bg="#D8BFD8", fg="black", font="Arial 15 bold", width=15, height=1, command=self.eliminar_cliente)
         button1.pack(pady=10)
 
@@ -84,7 +84,7 @@ class GestorDeClientes:
             self.entry2.delete(0, END)
             self.entry3.delete(0, END)
         else:
-            messagebox.showwarning("Advertencia", "Por favor, complete todos los campos.")
+            messagebox.showwarning("ERROR", "Por favor, complete todos los campos.")
 
     def eliminar_cliente(self):
         seleccion = self.listbox.curselection()
@@ -93,7 +93,7 @@ class GestorDeClientes:
             self.listbox.delete(index)
             self.guardar_clientes()
         else:
-            messagebox.showwarning("Advertencia", "Por favor, seleccione un cliente para eliminar.")
+            messagebox.showwarning("ERROR", "Por favor, seleccione un cliente para eliminar.")
 
     def cargar_clientes(self):
         if os.path.exists("clientes.txt"):
